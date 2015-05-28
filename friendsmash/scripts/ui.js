@@ -85,3 +85,34 @@ function updateGameStats(gameState) {
 function onGameOverClose() {
   showHome();
 }
+
+function renderWelcome() {
+  var welcome = $('#welcome');
+  welcome.find('.first_name').html(friendCache.me.first_name);
+  welcome.find('.profile').attr('src',friendCache.me.picture.data.url);
+}
+
+function onPlay() {
+
+  var player = {
+    bombs: 5
+  };
+  if( friendCache.friends.length > 0 ) {
+    var randomFriend = Math.floor(getRandom(0, friendCache.friends.length));
+    challenger = {
+      id: friendCache.friends[randomFriend].id.toString(),
+      picture: friendCache.friends[randomFriend].picture.data.url,
+      name: friendCache.friends[randomFriend].first_name
+    };
+  } else {
+    var nCelebToSpawn = Math.floor(getRandom(0, celebs.length));
+    challenger = {
+      picture: celebs[nCelebToSpawn].picture,
+      name: celebs[nCelebToSpawn].name
+    };
+  }
+  showStage();
+  updateChallenger(challenger);
+  initGame(player, challenger, $('#canvas'), updateGameStats, onGameEnd);
+}
+
